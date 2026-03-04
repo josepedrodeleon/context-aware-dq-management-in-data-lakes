@@ -1,42 +1,42 @@
 CREATE 
   // CONTEXT MODELS
   (ctxm1:ContextModel {id: 'ctxm1'}),
-  (appDom:ApplicationDomain {id: 'appDom1', name: 'Cinematografía'}),
+  (appDom:ApplicationDomain {id: 'appDom1', name: 'Cinematography'}),
   (BR1:BusinessRule {id: 'BR1', Statement: 'Estado ∈ {Released, In Production, Post Production, Planned, Rumored, Canceled}', 
-                     semantic: 'Las películas se categorizan según su estado de producción, y se dividen en las categorías ‘Released’, ‘In Production’, ‘Post Production’, ‘Planned’, ‘Rumored’ y ‘Canceled.'}),
+                     semantic: 'Movies are categorized according to their production status, and are divided into the categories "Released", "In Production", "Post Production", "Planned", "Rumored" and "Canceled".'}),
   (BR2:BusinessRule {id: 'BR2', Statement: 'Estado <> Released -> release_date = 1800-01-01', 
-                     semantic: 'Para las películas cuyo estado no sea "Released", el release_date se debe setear al valor 1800-01-01'}),
+                     semantic: 'For movies whose status is not "Released", release_date must be set to the value 1800-01-01'}),
   (BR3:BusinessRule {id: 'BR3', Statement: 'format(release_date) = "YYYY-MM-DD"', 
-                     semantic: 'Las fechas se representan en formato "YYYY-MM-DD"'}),
+                     semantic: 'Dates are represented in "YYYY-MM-DD" format'}),
   (BR4:BusinessRule {id: 'BR4', Statement: 'Rating ∈ [0, 10.0]', 
-                     semantic: 'El rating de una película se representa con un número real entre 0 y 10'}),
+                     semantic: 'A movie rating is represented by a real number between 0 and 10'}),
   (UT1:UserType {id: 'UT1', name: 'Movie Performance Specialist', characteristics: 'Data Analyst'}),
-  (T1:TaskAtHand {id: 'T1', name: 'Predicción de calificaciones', 
-                  purpose: 'Predecir las calificaciones de películas en función de características como popularidad, género y duración.'}),
-  (T2:TaskAtHand {id: 'T2', name: 'Identificación de tendencias de fechas de estreno', 
-                  purpose: 'Identificar tendencias en las fechas de estreno de películas.'}),
-  (T3:TaskAtHand {id: 'T3', name: 'Identificación de factores de éxito', 
-                  purpose: 'Analizar la relación entre cantidad de votos, valoración promedio y popularidad para determinar los factores que contribuyen al éxito de una película.'}),
-  (T4:TaskAtHand {id: 'T4', name: 'Análisis de estrategias efectivas de marketing para películas de adultos y niños', 
-                  purpose: 'Identificar compañías de producción exitosas según los votos que recibieron las películas que produjeron y analizar sus estrategias. Se debe hacer un análisis distinto dependiendo de si la película es para adultos o apta para todo público.'}),
+  (T1:TaskAtHand {id: 'T1', name: 'Rating prediction', 
+                  purpose: 'Predict movie ratings based on characteristics such as popularity, genre and duration.'}),
+  (T2:TaskAtHand {id: 'T2', name: 'Release date trend identification', 
+                  purpose: 'Identify trends in movie release dates.'}),
+  (T3:TaskAtHand {id: 'T3', name: 'Success factor identification', 
+                  purpose: 'Analyze the relationship between vote count, average rating and popularity to determine the factors that contribute to a movie\'s success.'}),
+  (T4:TaskAtHand {id: 'T4', name: 'Analysis of effective marketing strategies for adult and family movies', 
+                  purpose: 'Identify successful production companies based on the votes received by the movies they produced and analyze their strategies. A separate analysis must be done depending on whether the movie is for adults or suitable for all audiences.'}),
   (T1)-[:ASSIGNED_TO]->(UT1),
   (T2)-[:ASSIGNED_TO]->(UT1),
   (T3)-[:ASSIGNED_TO]->(UT1),
   (T4)-[:ASSIGNED_TO]->(UT1),
 
   (DQR1:DQRequirement {id: 'DQR1', 
-                       statement: 'Los datos del día anterior deben estar actualizados y disponibles todos los días a las 9am (GMT-3).',
-                       description: 'Los datos deben estar disponibles en su versión más actualizada todos los días a las 9am (GMT-3), ya que a esa hora comienza la ejecución programada del modelo predictivo de la aplicación del usuario.'}),
+                       statement: 'Previous day data must be updated and available every day at 9am (GMT-3).',
+                       description: 'Data must be available in its most up-to-date version every day at 9am (GMT-3), as that is when the user application\'s predictive model scheduled execution begins.'}),
   (DQR2:DQRequirement {id: 'DQR2', 
-                       statement: 'Los datos que representen nombres deben estar bien escritos.',
-                       description: 'Los campos del tipo "String" que representen nombres de países, nombres de productores, nombres de idiomas, o nombres de películas no deben presentar faltas de ortografía, y deben hacer uso correcto de letras mayúsulas.'}),
+                       statement: 'Data representing names must be spelled correctly.',
+                       description: 'Fields of type "String" that represent country names, producer names, language names, or movie names must not contain spelling errors, and must use capitalization correctly.'}),
   (DQR3:DQRequirement {id: 'DQR3', 
-                       statement: 'Ningún dato puede tomar el valor "" ni null.',
-                       description: 'Los valores de las celdas no pueden tener valores vacíos ni nulos. Sí se permiten valores que representen explícitamente la falta de datos, como "Sin Datos" o fechas especiales.'
+                       statement: 'No data may take the value "" nor null.',
+                       description: 'Cell values cannot be empty or null. Values that explicitly represent missing data, such as "No Data" or special dates, are allowed.'
                        }),
   (DQR4:DQRequirement {id: 'DQR4', 
-                       statement: 'Deben estar presentes al menos 90% de las películas del año 2000 en adelante.',
-                       description: 'Tomando como referencia el catálogo de IMDB, se debe contar con una cobertura mayor o igual a 90% para las películas estrenadas a partir del año 2000.'}),
+                       statement: 'At least 90% of movies from the year 2000 onward must be present.',
+                       description: 'Using the IMDB catalog as reference, coverage must be greater than or equal to 90% for movies released from the year 2000 onward.'}),
   (DQR1)-[:IMPOSED_BY]->(UT1),
   (DQR2)-[:IMPOSED_BY]->(UT1),
   (DQR3)-[:IMPOSED_BY]->(UT1),
@@ -44,10 +44,10 @@ CREATE
 
   (DF1:DataFiltering {id: 'DF1', 
                       statement: 'SELECT * FROM movies WHERE adult = "True"', 
-                      description: 'Filtrar registros que indiquen que la película es para adultos'}),
+                      description: 'Filter records that indicate the movie is for adults'}),
   (DF2:DataFiltering {id: 'DF2', 
                       statement: 'SELECT * FROM movies WHERE adult = "False"', 
-                      description: 'Filtrar registros que indiquen que la película es apta para todo público'}),
+                      description: 'Filter records that indicate the movie is suitable for all audiences'}),
 
   (DF1)-[:ADDRESSED_BY]->(T4),
   (DF2)-[:ADDRESSED_BY]->(T4),
@@ -76,12 +76,12 @@ CREATE
 
   // ctxm2
   (ctxm2:ContextModel {id: 'ctxm2'}),
-  (BR5:BusinessRule {id: 'BR5', statement: 'Deben estar presentes al menos 90% de las películas del año 2000 en adelante.',
-                       semantic: 'Tomando como referencia el catálogo de IMDB, se debe contar con una cobertura mayor o igual a 90% para las películas estrenadas a partir del año 2000.'}),
+  (BR5:BusinessRule {id: 'BR5', statement: 'At least 90% of movies from the year 2000 onward must be present.',
+                       semantic: 'Using the IMDB catalog as reference, coverage must be greater than or equal to 90% for movies released from the year 2000 onward.'}),
   (BR5)-[:DERIVED_FROM]->(DQR4),
   (SR2:SystemRequirement {id: 'SR2', 
-                       statement: 'Los datos del día anterior anterior deben estar actualizados y disponibles todos los días a las 8:45am (GMT-3).',
-                       description: 'Los datos deben estar disponibles en su versión más actualizada todos los días a las 8:45am (GMT-3)'}),
+                       statement: 'Previous day data must be updated and available every day at 8:45am (GMT-3).',
+                       description: 'Data must be available in its most up-to-date version every day at 8:45am (GMT-3)'}),
   (SR2)-[:DERIVED_FROM]->(DQR1),
 
   (DL2:DataLineage {id: 'DL2',
@@ -100,16 +100,16 @@ CREATE
   // ctxm3
   (ctxm3:ContextModel {id: 'ctxm3'}),
   (SR3:SystemRequirement {id: 'SR3', 
-                       statement: 'Los datos del día anterior anterior deben estar actualizados y disponibles todos los días a las 8:30am (GMT-3).',
-                       description: 'Los datos deben estar disponibles en su versión más actualizada todos los días a las 8:30am (GMT-3)'}),
+                       statement: 'Previous day data must be updated and available every day at 8:30am (GMT-3).',
+                       description: 'Data must be available in its most up-to-date version every day at 8:30am (GMT-3)'}),
   (SR3)-[:DERIVED_FROM]->(SR2),
   (SR4:SystemRequirement {id: 'SR4', 
-                       statement: 'Soporte UTF-8.',
-                       description: 'Todos los caracteres de los datos deben estar encodeados con caracteres compatibles con UTF-8.'}),
+                       statement: 'UTF-8 support.',
+                       description: 'All data characters must be encoded with UTF-8 compatible characters.'}),
 
   (OM1:OtherMetadata {id: 'OM1', 
                        path: 'https://www.kaggle.com/datasets/asaniczka/tmdb-movies-dataset-2023-930k-movies?select=TMDB_movie_dataset_v11.csv',
-                       description: 'Metadata available at the dataset’s origial publication',
+                       description: 'Metadata available at the dataset\'s original publication',
                        Author: 'asaniczka',
                        Last_update: '01/05/2025'}),
 
@@ -127,51 +127,51 @@ CREATE
   (ctxm3)-[:HAS_COMPONENT]->(DL3),
 
 
-  // Crear DQM1
+  // Create DQM1
   (dqm1:DQModel {id: 'dqm1'}),
-  // Crear dimensiones
-  (D1:DQDimension {id: 'D1', name: 'Exactitud', semantic: 'Concierne la correctitud y la precisión con que los datos del mundo real son representados en un sistema de información'})-[:D_IN]->(dqm1),
-  (D2:DQDimension {id: 'D2', name: 'Completitud', semantic: 'Concierne la proporción del mundo real que está representado en el SI'})-[:D_IN]->(dqm1),
-  (D3:DQDimension {id: 'D3', name: 'Consistencia', semantic: 'Concierne la consistencia entre los registros del SI'})-[:D_IN]->(dqm1),
-  (D4:DQDimension {id: 'D4', name: 'Unicidad', semantic: 'Concierne el grado de repetición de los registros del SI'})-[:D_IN]->(dqm1),
-  (D5:DQDimension {id: 'D5', name: 'Fescura', semantic: 'Concierne el grado en el que la edad de los datos afecta su uso'})-[:D_IN]->(dqm1),
+  // Create dimensions
+  (D1:DQDimension {id: 'D1', name: 'Accuracy', semantic: 'Concerns the correctness and precision with which real-world data is represented in an information system'})-[:D_IN]->(dqm1),
+  (D2:DQDimension {id: 'D2', name: 'Completeness', semantic: 'Concerns the proportion of the real world that is represented in the information system'})-[:D_IN]->(dqm1),
+  (D3:DQDimension {id: 'D3', name: 'Consistency', semantic: 'Concerns consistency among information system records'})-[:D_IN]->(dqm1),
+  (D4:DQDimension {id: 'D4', name: 'Uniqueness', semantic: 'Concerns the degree of repetition of information system records'})-[:D_IN]->(dqm1),
+  (D5:DQDimension {id: 'D5', name: 'Freshness', semantic: 'Concerns the degree to which data age affects its use'})-[:D_IN]->(dqm1),
   
-  // Crear factores
-  (d1f1:DQFactor {id: 'D1F1', name: 'Exactitud Sintáctica', semantic: 'Indica qué tan libre de errores sintácticos están los datos'})-[:FACET_OF]->(D1),
-  (d1f2:DQFactor {id: 'D1F2', name: 'Exactitud Semántica', semantic: 'Indica qué tan correctos son los datos, relativos a la realidad'})-[:FACET_OF]->(D1),
-  (d2f1:DQFactor {id: 'D2F1', name: 'Densidad', semantic: 'Indica qué cantidad de registros con datos faltantes hay'})-[:FACET_OF]->(D2),
-  (d2f2:DQFactor {id: 'D2F2', name: 'Cobertura', semantic: 'Indica qué cantidad de datos de la realidad están representados en el sistema'})-[:FACET_OF]->(D2),
-  (d3f1:DQFactor {id: 'D3F1', name: 'Integridad de Dominio', semantic: 'Indica que los datos representados estén en el dominio, dada su semántica y el dominio de aplicación'})-[:FACET_OF]->(D3),
-  (d3f2:DQFactor {id: 'D3F2', name: 'Integridad Intrarrelación', semantic: 'Indica que los valores de dos o más atributos de un registro sean consistentes entre sí'})-[:FACET_OF]->(D3),
-  (d4f1:DQFactor {id: 'D4F1', name: 'No-Duplicación', semantic: 'Mide el grado de filas que son únicas'})-[:FACET_OF]->(D4),
-  (d5f1:DQFactor {id: 'D5F1', name: 'Oportunidad', semantic: 'Mide qué tan oportunos son los datos a la hora de su lectura'})-[:FACET_OF]->(D5),
+  // Create factors
+  (d1f1:DQFactor {id: 'D1F1', name: 'Syntactic Accuracy', semantic: 'Indicates how free of syntactic errors the data is'})-[:FACET_OF]->(D1),
+  (d1f2:DQFactor {id: 'D1F2', name: 'Semantic Accuracy', semantic: 'Indicates how correct the data is relative to reality'})-[:FACET_OF]->(D1),
+  (d2f1:DQFactor {id: 'D2F1', name: 'Density', semantic: 'Indicates the quantity of records with missing data'})-[:FACET_OF]->(D2),
+  (d2f2:DQFactor {id: 'D2F2', name: 'Coverage', semantic: 'Indicates how much real-world data is represented in the system'})-[:FACET_OF]->(D2),
+  (d3f1:DQFactor {id: 'D3F1', name: 'Domain Integrity', semantic: 'Indicates that represented data is within the domain, given its semantics and the application domain'})-[:FACET_OF]->(D3),
+  (d3f2:DQFactor {id: 'D3F2', name: 'Intra-relation Integrity', semantic: 'Indicates that the values of two or more attributes of a record are consistent with each other'})-[:FACET_OF]->(D3),
+  (d4f1:DQFactor {id: 'D4F1', name: 'Non-Duplication', semantic: 'Measures the degree of rows that are unique'})-[:FACET_OF]->(D4),
+  (d5f1:DQFactor {id: 'D5F1', name: 'Timeliness', semantic: 'Measures how timely the data is at the time of reading'})-[:FACET_OF]->(D5),
 
-  // Crear metricas
-  (m1:DQMetric {id: 'M1', name: 'FormatoFecha', purpose: 'Mide si el formato de un dato que representa una fecha es correcto, relativo a un formato especificado. No se mide para datos faltantes.', granularity: 'celda', resultDomain: '{0,1}'})-[:MEASURES]->(d1f1),
-  (m2:DQMetric {id: 'M2', name: 'NombreCorrecto', purpose: 'Mide si un dato que representa un nombre está bien escrito, sin imporar las mayúsculas', granularity: 'celda', resultDomain: '{0,1}'})-[:MEASURES]->(d1f1),
-  (m3:DQMetric {id: 'M3', name: 'FechaCorrecta', purpose: 'Mide si una fecha es correcta, dado un referencial', granularity: 'celda', resultDomain: '{0,1}'})-[:MEASURES]->(d1f2),
-  (m4:DQMetric {id: 'M4', name: 'RatioNoVacios', purpose: 'Mide el grado de valores no faltantes en una columna. Lo que se considera faltante depende del método.', granularity: 'columna', resultDomain: '[0..1]'})-[:MEASURES]->(d2f1),
-  (m5:DQMetric {id: 'M5', name: 'PorcentajeCobertura', purpose: 'Mide el porcentaje de valores que se encuentran representados por algún registro del dataset, relativo a un referencial', granularity: 'dataset', resultDomain: '[0..1]'})-[:MEASURES]->(d2f2),
-  (m6:DQMetric {id: 'M6', name: 'DatoEnDominioString', purpose: 'Mide si un dato de tipo texto es posible en el dominio, dado un referencial', granularity: 'celda', resultDomain: '{0,1}'})-[:MEASURES]->(d3f1),
-  (m7:DQMetric {id: 'M7', name: 'DatoEnRango', purpose: 'Mide si un dato numérico es positivo', granularity: 'celda', resultDomain: '{0,1}'})-[:MEASURES]->(d3f1),
-  (m8:DQMetric {id: 'M8', name: 'IntegridadFechas', purpose: 'Mide si una fecha es válida, dado otro dato', granularity: 'par de celdas', resultDomain: '{0,1}'})-[:MEASURES]->(d3f2),
-  (m9:DQMetric {id: 'M9', name: 'RatioClavesUnicas', purpose: 'Mide el grado de filas de un dataset que son únicas, según una fila identificadora', granularity: 'dataset', resultDomain: '[0..1]'})-[:MEASURES]->(d4f1),
-  (m10:DQMetric {id: 'M10', name: 'OportunidadPuntaje', purpose: 'Calcula la diferencia en minutos entre la hora en la que se necesitan los datos y la hora en la que se actualizan', granularity: 'dataset', resultDomain: '(0..+inf)'})-[:MEASURES]->(d5f1),
-  (m11:DQMetric {id: 'M11', name: 'Edad', purpose: 'Calcula el tiempo desde la última actualización de los datos, en una unidad de tiempo dada', granularity: 'dataset', resultDomain: '(0..+inf)'})-[:MEASURES]->(d5f1),
+  // Create metrics
+  (m1:DQMetric {id: 'M1', name: 'DateFormat', purpose: 'Measures whether the format of a data value representing a date is correct relative to a specified format. Not measured for missing data.', granularity: 'cell', resultDomain: '{0,1}'})-[:MEASURES]->(d1f1),
+  (m2:DQMetric {id: 'M2', name: 'CorrectName', purpose: 'Measures whether a data value representing a name is spelled correctly, regardless of capitalization', granularity: 'cell', resultDomain: '{0,1}'})-[:MEASURES]->(d1f1),
+  (m3:DQMetric {id: 'M3', name: 'CorrectDate', purpose: 'Measures whether a date is correct given a reference', granularity: 'cell', resultDomain: '{0,1}'})-[:MEASURES]->(d1f2),
+  (m4:DQMetric {id: 'M4', name: 'NonEmptyRatio', purpose: 'Measures the degree of non-missing values in a column. What is considered missing depends on the method.', granularity: 'column', resultDomain: '[0..1]'})-[:MEASURES]->(d2f1),
+  (m5:DQMetric {id: 'M5', name: 'CoveragePercentage', purpose: 'Measures the percentage of values that are represented by some record in the dataset, relative to a reference', granularity: 'dataset', resultDomain: '[0..1]'})-[:MEASURES]->(d2f2),
+  (m6:DQMetric {id: 'M6', name: 'StringInDomain', purpose: 'Measures whether a text-type data value is valid in the domain, given a reference', granularity: 'cell', resultDomain: '{0,1}'})-[:MEASURES]->(d3f1),
+  (m7:DQMetric {id: 'M7', name: 'ValueInRange', purpose: 'Measures whether a numeric data value is positive', granularity: 'cell', resultDomain: '{0,1}'})-[:MEASURES]->(d3f1),
+  (m8:DQMetric {id: 'M8', name: 'DateIntegrity', purpose: 'Measures whether a date is valid given another data value', granularity: 'cell pair', resultDomain: '{0,1}'})-[:MEASURES]->(d3f2),
+  (m9:DQMetric {id: 'M9', name: 'UniqueKeyRatio', purpose: 'Measures the degree of dataset rows that are unique, according to an identifier column', granularity: 'dataset', resultDomain: '[0..1]'})-[:MEASURES]->(d4f1),
+  (m10:DQMetric {id: 'M10', name: 'TimelinessScore', purpose: 'Calculates the difference in minutes between the time when data is needed and the time when it is updated', granularity: 'dataset', resultDomain: '(0..+inf)'})-[:MEASURES]->(d5f1),
+  (m11:DQMetric {id: 'M11', name: 'Age', purpose: 'Calculates the time since the last data update, in a given time unit', granularity: 'dataset', resultDomain: '(0..+inf)'})-[:MEASURES]->(d5f1),
 
-  // Metodos
-  (me1:DQMethod {id: 'ME1', name: 'verificarFormatoFecha', inputDataTypes: 'String, String', outputDataTypes: 'Boolean', algorithm: 'verificarFormatoFecha(dato, formato)'})-[:IMPLEMENTS]->(m1),
-  (me2:DQMethod {id: 'ME2', name: 'verificarNombre', inputDataTypes: 'String, Dataset', outputDataTypes: 'Boolean', algorithm: 'compararNombreConReferencial(dato, referencial)'})-[:IMPLEMENTS]->(m2),
-  (me3:DQMethod {id: 'ME3', name: 'verificarFechaCorrecta', inputDataTypes: 'Date, String, dataset', outputDataTypes: 'Boolean', algorithm: 'fechaCorrecta(fecha, titulo, referencial)'})-[:IMPLEMENTS]->(m3),
-  (me4:DQMethod {id: 'ME4', name: 'ratioNoNulos', inputDataTypes: 'Object[]', outputDataTypes: 'Float', algorithm: 'ratioNoNulos(columna)'})-[:IMPLEMENTS]->(m4),
-  (me5:DQMethod {id: 'ME5', name: 'ratioNoNulosNiSD', inputDataTypes: 'Object[], String[]', outputDataTypes: 'Float', algorithm: 'ratioNoNulosNiSD(columna, ref)'})-[:IMPLEMENTS]->(m4),
-  (me6:DQMethod {id: 'ME6', name: 'porcentajeCoberturaRef', inputDataTypes: 'Object[], String[]', outputDataTypes: 'Float', algorithm: 'porcentajeCoberturaRef(columna, ref)'})-[:IMPLEMENTS]->(m5),
-  (me7:DQMethod {id: 'ME7', name: 'StatusEnDominio', inputDataTypes: 'String, String[]', outputDataTypes: 'Boolean', algorithm: 'verificarStatus(status, posiblesStatus)'})-[:IMPLEMENTS]->(m6),
-  (me8:DQMethod {id: 'ME8', name: 'DatoEnRango', inputDataTypes: 'Float, Float, Float', outputDataTypes: 'Boolean', algorithm: 'verificarNumeroEnRango(dato, min, max)'})-[:IMPLEMENTS]->(m7),
-  (me9:DQMethod {id: 'ME9', name: 'IntegridadFechasReleased', inputDataTypes: 'Date, String', outputDataTypes: 'Boolean', algorithm: 'fechaEsValidaSegunStatus(fecha, status)'})-[:IMPLEMENTS]->(m8),
-  (me10:DQMethod {id: 'ME10', name: 'RatioClavesUnicas', inputDataTypes: 'Object[][], Object[]', outputDataTypes: 'Float', algorithm: 'ratioNoDupFilas(dataset, columna)'})-[:IMPLEMENTS]->(m9),
-  (me11:DQMethod {id: 'ME11', name: 'Oportunidad9am', inputDataTypes: 'Object[][]', outputDataTypes: 'Integer', algorithm: 'timelinessScore(dataset)'})-[:IMPLEMENTS]->(m10),
-  (me12:DQMethod {id: 'ME12', name: 'EdadMinutos', inputDataTypes: 'Object[][]', outputDataTypes: 'Integer', algorithm: 'staleness(dataset)'})-[:IMPLEMENTS]->(m11),
+  // Methods
+  (me1:DQMethod {id: 'ME1', name: 'verifyDateFormat', inputDataTypes: 'String, String', outputDataTypes: 'Boolean', algorithm: 'verifyDateFormat(data, format)'})-[:IMPLEMENTS]->(m1),
+  (me2:DQMethod {id: 'ME2', name: 'verifyName', inputDataTypes: 'String, Dataset', outputDataTypes: 'Boolean', algorithm: 'compareNameWithReference(data, reference)'})-[:IMPLEMENTS]->(m2),
+  (me3:DQMethod {id: 'ME3', name: 'verifyCorrectDate', inputDataTypes: 'Date, String, dataset', outputDataTypes: 'Boolean', algorithm: 'correctDate(date, title, reference)'})-[:IMPLEMENTS]->(m3),
+  (me4:DQMethod {id: 'ME4', name: 'nonNullRatio', inputDataTypes: 'Object[]', outputDataTypes: 'Float', algorithm: 'nonNullRatio(column)'})-[:IMPLEMENTS]->(m4),
+  (me5:DQMethod {id: 'ME5', name: 'nonNullNorNoDataRatio', inputDataTypes: 'Object[], String[]', outputDataTypes: 'Float', algorithm: 'nonNullNorNoDataRatio(column, ref)'})-[:IMPLEMENTS]->(m4),
+  (me6:DQMethod {id: 'ME6', name: 'coveragePercentageRef', inputDataTypes: 'Object[], String[]', outputDataTypes: 'Float', algorithm: 'coveragePercentageRef(column, ref)'})-[:IMPLEMENTS]->(m5),
+  (me7:DQMethod {id: 'ME7', name: 'statusInDomain', inputDataTypes: 'String, String[]', outputDataTypes: 'Boolean', algorithm: 'verifyStatus(status, possibleStatuses)'})-[:IMPLEMENTS]->(m6),
+  (me8:DQMethod {id: 'ME8', name: 'valueInRange', inputDataTypes: 'Float, Float, Float', outputDataTypes: 'Boolean', algorithm: 'verifyNumberInRange(data, min, max)'})-[:IMPLEMENTS]->(m7),
+  (me9:DQMethod {id: 'ME9', name: 'dateIntegrityReleased', inputDataTypes: 'Date, String', outputDataTypes: 'Boolean', algorithm: 'dateValidForStatus(date, status)'})-[:IMPLEMENTS]->(m8),
+  (me10:DQMethod {id: 'ME10', name: 'uniqueKeyRatio', inputDataTypes: 'Object[][], Object[]', outputDataTypes: 'Float', algorithm: 'nonDuplicateRowRatio(dataset, column)'})-[:IMPLEMENTS]->(m9),
+  (me11:DQMethod {id: 'ME11', name: 'timeliness9am', inputDataTypes: 'Object[][]', outputDataTypes: 'Integer', algorithm: 'timelinessScore(dataset)'})-[:IMPLEMENTS]->(m10),
+  (me12:DQMethod {id: 'ME12', name: 'ageInMinutes', inputDataTypes: 'Object[][]', outputDataTypes: 'Integer', algorithm: 'staleness(dataset)'})-[:IMPLEMENTS]->(m11),
 
   (ame1:AppliedDQMethod {id: 'ame1', appliedTo: 'release_date'})-[:ASSOCIATED]->(me1),
   (ame2:AppliedDQMethod {id: 'ame2', appliedTo: 'title'})-[:ASSOCIATED]->(me2),
@@ -220,7 +220,7 @@ CREATE
   (ame22)-[:BELONGS_TO]->(dqm1),
   (ame23)-[:BELONGS_TO]->(dqm1),
 
-  // Relaciones entre DQ Model 1 y Context Model 1
+  // Relationships between DQ Model 1 and Context Model 1
   (ctxm1)-[:CONTEXTUALIZES_DQM]->(dqm1),
   (D1)-[:SUGGESTED_BY]->(BR3),
   (D1)-[:SUGGESTED_BY]->(T3),
@@ -290,14 +290,14 @@ CREATE
   (me12)-[:USES]->(DQR1),
 
 
-  // Crear DQM2
+  // Create DQM2
   (dqm2:DQModel {id: 'dqm2'}),
   (D1)-[:D_IN]->(dqm2),
   (D2)-[:D_IN]->(dqm2),
   (D3)-[:D_IN]->(dqm2),
   (D4)-[:D_IN]->(dqm2),
   (D5)-[:D_IN]->(dqm2),
-  (me13:DQMethod {id: 'ME13', name: 'Oportunidad8:45am', inputDataTypes: 'Object[][]', outputDataTypes: 'Integer', algorithm: 'timelinessScore(dataset)'})-[:IMPLEMENTS]->(m10),
+  (me13:DQMethod {id: 'ME13', name: 'timeliness8_45am', inputDataTypes: 'Object[][]', outputDataTypes: 'Integer', algorithm: 'timelinessScore(dataset)'})-[:IMPLEMENTS]->(m10),
   (ame24:AppliedDQMethod {id: 'ame24', appliedTo: 'release_date'})-[:ASSOCIATED]->(me1),
   (ame25:AppliedDQMethod {id: 'ame25', appliedTo: 'title'})-[:ASSOCIATED]->(me4),
   (ame26:AppliedDQMethod {id: 'ame26', appliedTo: 'genres'})-[:ASSOCIATED]->(me4),
@@ -327,7 +327,7 @@ CREATE
   (ame36)-[:BELONGS_TO]->(dqm2),
   (ame37)-[:BELONGS_TO]->(dqm2),
 
-  // Relaciones entre DQ Model 2 y Context Model 2
+  // Relationships between DQ Model 2 and Context Model 2
   (ctxm2)-[:CONTEXTUALIZES_DQM]->(dqm2),
   (D2)-[:SUGGESTED_BY]->(BR5),
   (D2)-[:SUGGESTED_BY]->(DL2),
@@ -351,18 +351,18 @@ CREATE
   (me12)-[:USES]->(SR2),
   (me13)-[:USES]->(SR2),
 
-  // Crear DQM3
+  // Create DQM3
   (dqm3:DQModel {id: 'dqm3'}),
   (D1)-[:D_IN]->(dqm3),
   (D2)-[:D_IN]->(dqm3),
   (D3)-[:D_IN]->(dqm3),
   (D5)-[:D_IN]->(dqm3),
-  (D6:DQDimension {id: 'D6', name: 'Cantidad de Datos', semantic: 'Concierne la cantidad y el tamaño de los datos almacenados en el SI'})-[:D_IN]->(dqm3),
-  (d6f1:DQFactor {id: 'D6F1', name: 'Volumen', semantic: 'Mide la cantidad de datos almacenados '})-[:FACET_OF]->(D6),
-  (m12:DQMetric {id: 'M12', name: 'CantidadDeFilas', purpose: 'Calcula la cantidad de filas en un dataset', granularity: 'dataset', resultDomain: '(0..+inf)'})-[:MEASURES]->(d6f1),
-  (m13:DQMetric {id: 'M13', name: 'Tamano', purpose: 'Calcula el tamaño del dataset en alguna unidad especificada', granularity: 'dataset', resultDomain: '(0..+inf)'})-[:MEASURES]->(d6f1),
-  (me14:DQMethod {id: 'ME14', name: 'Oportunidad8:30am', inputDataTypes: 'Object[][]', outputDataTypes: 'Integer', algorithm: 'timelinessScore(dataset)'})-[:IMPLEMENTS]->(m10),
-  (me15:DQMethod {id: 'ME15', name: 'countFilas', inputDataTypes: 'Object[][]', outputDataTypes: 'Integer', algorithm: 'countRows(dataset)'})-[:IMPLEMENTS]->(m12),
+  (D6:DQDimension {id: 'D6', name: 'Data Volume', semantic: 'Concerns the quantity and size of data stored in the information system'})-[:D_IN]->(dqm3),
+  (d6f1:DQFactor {id: 'D6F1', name: 'Volume', semantic: 'Measures the quantity of stored data'})-[:FACET_OF]->(D6),
+  (m12:DQMetric {id: 'M12', name: 'RowCount', purpose: 'Calculates the number of rows in a dataset', granularity: 'dataset', resultDomain: '(0..+inf)'})-[:MEASURES]->(d6f1),
+  (m13:DQMetric {id: 'M13', name: 'Size', purpose: 'Calculates the dataset size in some specified unit', granularity: 'dataset', resultDomain: '(0..+inf)'})-[:MEASURES]->(d6f1),
+  (me14:DQMethod {id: 'ME14', name: 'timeliness8_30am', inputDataTypes: 'Object[][]', outputDataTypes: 'Integer', algorithm: 'timelinessScore(dataset)'})-[:IMPLEMENTS]->(m10),
+  (me15:DQMethod {id: 'ME15', name: 'countRows', inputDataTypes: 'Object[][]', outputDataTypes: 'Integer', algorithm: 'countRows(dataset)'})-[:IMPLEMENTS]->(m12),
   (me16:DQMethod {id: 'ME16', name: 'byteSize', inputDataTypes: 'Object[][]', outputDataTypes: 'Integer', algorithm: 'sizeInBytes(dataset)'})-[:IMPLEMENTS]->(m13),
   (ame38:AppliedDQMethod {id: 'ame38', appliedTo: 'release_date'})-[:ASSOCIATED]->(me1),
   (ame39:AppliedDQMethod {id: 'ame39', appliedTo: 'title'})-[:ASSOCIATED]->(me4),
@@ -389,7 +389,7 @@ CREATE
   (ame48)-[:BELONGS_TO]->(dqm3),
   (ame49)-[:BELONGS_TO]->(dqm3),
 
-  // Relaciones entre DQ Model 3 y Context Model 3
+  // Relationships between DQ Model 3 and Context Model 3
   (ctxm3)-[:CONTEXTUALIZES_DQM]->(dqm3),
   (D2)-[:SUGGESTED_BY]->(OM1),
   (D5)-[:SUGGESTED_BY]->(SR3),
